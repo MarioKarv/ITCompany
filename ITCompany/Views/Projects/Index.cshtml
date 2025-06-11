@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ITCompany.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Назва
+            </th>
+            <th>
+                Опис
+            </th>
+            <th>
+                Дата початку
+            </th>
+            <th>
+                Дата закінчення
+            </th>
+            <th>
+                Вартість
+            </th>
+            <th>
+                Тип проекту
+            </th>
+            <th>
+                Відсоток виконання
+            </th>
+            <th>
+                Кількість програмістів
+            </th>
+            <th>
+                Кількість завдань
+            </th>
+            <th>
+                Статус
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                @if(item.StartDate.ToString() != "01.01.0001 0:00:00"){
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                }
+                else{
+                    <td>
+                        @Html.Raw("-")
+                    </td>
+                }
+                @if(item.EndDate.ToString() != "01.01.0001 0:00:00"){
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                }
+                else{
+                    <td>
+                        @Html.Raw("-")
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Percent)
+                </td>
+                <td>
+                    @Html.Raw(item.ProjectCommands.Count())
+                </td>
+                <td>
+                    @Html.Raw(item.Tasks.Count())
+                </td>
+                <td>
+                    @if (item.StartDate.ToString().Equals(item.EndDate.ToString()) && !item.StartDate.ToString().Equals("01.01.0001 0:00:00"))
+                    {
+                        @Html.Raw("Відхилений")
+                    }
+                    else if (item.EndDate.CompareTo(DateTime.Now) < 0 && !item.EndDate.ToString().Equals("01.01.0001 0:00:00"))
+                    {
+                        @Html.Raw("Завершений")
+                    }
+                    else if (item.StartDate.ToString() == "01.01.0001 0:00:00"){
+                        @Html.Raw("Відкритий")
+                    }
+                    else{
+                        @Html.Raw("Активний")
+                    } 
+
+            </td>
+            <td>
+                @if(item.StartDate.ToString() == "01.01.0001 0:00:00" && User.IsInRole("Клієнт")){
+                    <a asp-action="Edit" asp-route-id="@item.ID">Редагувати</a>
+                }
+                <a asp-action="Details" asp-route-id="@item.ID">Інформація</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

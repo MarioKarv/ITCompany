@@ -1,0 +1,36 @@
+﻿@model ITCompany.Models.ProjectCommand
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Інформація</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Працівник
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Employee.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            Проєкт
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Project.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.isPrime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.isPrime)
+        </dd>
+    </dl>
+</div>
+<div>
+    
+    
+</div>

@@ -1,0 +1,296 @@
+﻿@model ITCompany.Models.User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Інформація</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Аватар
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="@Model.Avatar" alt="avatar" width="150px;"/>
+        </dd>
+        @if (ViewBag.My)
+        {
+            <dt class = "col-sm-2">
+                Логін
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Login)
+            </dd>
+            <dt class = "col-sm-2">
+                Пароль
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Password)
+            </dd>    
+        }
+        <dt class = "col-sm-2">
+            Ім'я
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            Прізвище
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            Роль
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Role.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if(ViewBag.My){
+        <p>
+            <a asp-action="Edit" asp-route-id="@Model.ID">Редагувати</a>
+        </p>
+    }
+</div>
+@if (User.IsInRole("Клієнт"))
+{
+    <div>
+        <table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Назва
+            </th>
+            <th>
+                Опис
+            </th>
+            <th>
+                Дата початку
+            </th>
+            <th>
+                Дата закінчення
+            </th>
+            <th>
+                Вартість
+            </th>
+            <th>
+                Тип проекту
+            </th>
+            <th>
+                Відсоток виконання
+            </th>
+            <th>
+                Кількість програмістів
+            </th>
+            <th>
+                Кількість завдань
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Projects) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            @if(item.StartDate.ToString() != "01.01.0001 0:00:00"){
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+            }
+            else{
+                <td>
+                    @Html.Raw("-")
+                </td>
+            }
+            @if(item.EndDate.ToString() != "01.01.0001 0:00:00"){
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+            }
+            else{
+                <td>
+                    @Html.Raw("-")
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Percent)
+            </td>
+            <td>
+                @Html.Raw(item.ProjectCommands.Count())
+            </td>
+            <td>
+                @Html.Raw(item.Tasks.Count())
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    </div>
+}
+else
+{
+    if(Model.ProjectCommands.Count() > 0)
+    {
+        <hr />
+        <h5>Проекти</h5>
+        <hr />
+        <table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Назва
+            </th>
+            <th>
+                Опис
+            </th>
+            <th>
+                Дата початку
+            </th>
+            <th>
+                Дата закінчення
+            </th>
+            <th>
+                Вартість
+            </th>
+            <th>
+                Тип проекту
+            </th>
+            <th>
+                Відсоток виконання
+            </th>
+            <th>
+                Кількість програмістів
+            </th>
+            <th>
+                Кількість завдань
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ProjectCommands) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Description)
+            </td>
+            @if(item.Project.StartDate.ToString() != "01.01.0001 0:00:00"){
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.StartDate)
+                </td>
+            }
+            else{
+                <td>
+                    @Html.Raw("-")
+                </td>
+            }
+            @if(item.Project.EndDate.ToString() != "01.01.0001 0:00:00"){
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.EndDate)
+                </td>
+            }
+            else{
+                <td>
+                    @Html.Raw("-")
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.ProjectType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Percent)
+            </td>
+            <td>
+                @Html.Raw(item.Project.ProjectCommands.Count())
+            </td>
+            <td>
+                @Html.Raw(item.Project.Tasks.Count())
+            </td>
+        </tr>
+}
+    </tbody>
+        </table>
+    }
+    if (Model.TaskCommands.Count() > 0)
+    {
+        <hr />
+        <h5>Завдання</h5>
+        <hr />
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Назва
+                    </th>
+                    <th>
+                        Дата початку
+                    </th>
+                    <th>
+                        Дата закінчення
+                    </th>
+                    <th>
+                        Фактична дата закінчення
+                    </th>
+                    <th>
+                        Опис
+                    </th>
+                    <th>
+                        Коефіцієнт складності
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model.TaskCommands) {
+                <tr>
+                    <td>
+                        <a asp-controller="Tasks" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Task.Name)</a> 
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Task.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Task.EndDate)
+                    </td>
+                        @if(item.Task.FactDate.ToString() != "01.01.0001 0:00:00")
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Task.FactDate)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.Raw("-")
+                            </td>
+                        }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Task.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Task.Coeffecient)
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    }
+}

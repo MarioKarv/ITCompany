@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ITCompany.Models.Task>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<p>
+    <a asp-action="Create">Додати</a>
+</p>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Назва
+            </th>
+            <th>
+                Дата початку
+            </th>
+            <th>
+                Дата закінчення
+            </th>
+            <th>
+                Фактична дата закінчення завдання
+            </th>
+            <th>
+                Опис
+            </th>
+            <th>
+                Коефіцієнт складності завдання
+            </th>
+            <th>
+                Проєкт
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FactDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coeffecient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.ID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Редагувати</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Інформація</a> 
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

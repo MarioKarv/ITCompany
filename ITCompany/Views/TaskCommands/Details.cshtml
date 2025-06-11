@@ -1,0 +1,30 @@
+﻿@model ITCompany.Models.TaskCommand
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Інформація</h1>
+
+<div>
+    <h4>TaskCommand</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Працівник
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Employee.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Task)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Task.ID)
+        </dd>
+    </dl>
+</div>
+<div>
+    
+    
+</div>

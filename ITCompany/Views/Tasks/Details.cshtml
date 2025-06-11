@@ -1,0 +1,112 @@
+﻿@model ITCompany.Models.Task
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Інформація</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Назва
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Дата початку
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            Дата закінчення
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class = "col-sm-2">
+            Фактична дата закінчення
+        </dt>
+        @if(Model.FactDate.ToString()!="01.01.0001 0:00:00")
+        {
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.FactDate)
+            </dd>
+        }
+        else
+        {
+            <dd class = "col-sm-10">
+                @Html.Raw("-")
+            </dd>
+        }
+        <dt class = "col-sm-2">
+            Опис
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Коефіцієнт складності
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Coeffecient)
+        </dd>
+        <dt class = "col-sm-2">
+            Проєкт
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Project.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if(Model.FactDate.ToString()=="01.01.0001 0:00:00" && !User.IsInRole("Клієнт") || ViewBag.isPrime)
+    {
+        <p>
+            <a style="color: red;" asp-controller="Tasks" asp-action="Finish" asp-route-id="@Model.ID">Завершити завдання</a> 
+        </p>
+        <hr />
+        <p>
+            <a asp-controller="TaskCommands" asp-action="Create" asp-route-id="@Model.ID">Додати працівника на завдання</a> 
+        </p>
+    }
+</div>
+<div>
+    @if (Model.TaskCommands.Count() > 0)
+    {
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        
+                    </th>
+                    <th>
+                        Працівник
+                    </th>
+                    <th>
+                        Посада
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.TaskCommands) {
+                <tr>
+                    <td>
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@item.Employee.ID"><img src="@item.Employee.Avatar" alt="avatar" width="150px;"/></a> 
+                    </td>
+                    <td>
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@item.Employee.ID">@Html.DisplayFor(modelItem => item.Employee.FullName)</a> 
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Role.Name)
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
